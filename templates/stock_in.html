@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Stock In - Mauli Enterprises</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #1e293b;
+            color: white;
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background: #334155;
+            padding: 10px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        .back-btn:hover {
+            background: #475569;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            margin-bottom: 30px;
+        }
+
+        .card h2 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .success-message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 12px 15px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 15px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            outline: none;
+            font-size: 14px;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37,99,235,0.1);
+        }
+
+        .submit-area {
+            margin-top: 25px;
+        }
+
+        .submit-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th {
+            background: #f1f5f9;
+            color: #334155;
+            padding: 13px;
+            text-align: left;
+            font-size: 13px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 13px;
+            color: #475569;
+            font-size: 13px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .stock-badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #94a3b8;
+        }
+
+        .info {
+            margin-top: 15px;
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 12px 15px;
+            color: #1e40af;
+            font-size: 13px;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 700px) {
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 19px;
+            }
+
+            .container {
+                margin: 20px auto;
+                padding: 0 12px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            📥 Stock In
+        </h1>
+
+        <a href="/dashboard" class="back-btn">
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- MAIN -->
+
+    <div class="container">
+
+
+        <!-- ADD STOCK -->
+
+        <div class="card">
+
+            <h2>
+                ➕ Add New Stock
+            </h2>
+
+
+            {% if message %}
+
+            <div class="success-message">
+                ✅ {{ message }}
+            </div>
+
+            {% endif %}
+
+
+            {% if error %}
+
+            <div class="error-message">
+                ❌ {{ error }}
+            </div>
+
+            {% endif %}
+
+
+            <form method="POST"
+                  action="/stock-in">
+
+
+                <div class="form-grid">
+
+
+                    <!-- PRODUCT -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Select Product
+                        </label>
+
+                        <select name="product_id" required>
+
+                            <option value="">
+                                -- Select Product --
+                            </option>
+
+                            {% for product in products %}
+
+                            <option value="{{ product[0] }}">
+
+                                {{ product[1] }}
+                                — Current Stock: {{ product[2] }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SUPPLIER -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Select Supplier / Dealer
+                        </label>
+
+                        <select name="supplier_id" required>
+
+                            <option value="">
+                                -- Select Supplier --
+                            </option>
+
+                            {% for supplier in suppliers %}
+
+                            <option value="{{ supplier[0] }}">
+
+                                {{ supplier[1] }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- QUANTITY -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Quantity Received
+                        </label>
+
+                        <input
+                            type="number"
+                            name="quantity"
+                            min="1"
+                            placeholder="Enter quantity"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PURCHASE PRICE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Purchase Price / Unit (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="purchase_price"
+                            min="0"
+                            step="0.01"
+                            placeholder="Enter purchase price"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="submit-area">
+
+                    <button
+                        type="submit"
+                        class="submit-btn"
+                    >
+
+                        📥 Add Stock
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+
+            <div class="info">
+
+                ℹ️ Stock add केल्यावर product चा
+                current quantity automatically वाढेल.
+
+            </div>
+
+
+        </div>
+
+
+        <!-- STOCK HISTORY -->
+
+        <div class="card">
+
+            <h2>
+                📋 Stock In History
+            </h2>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Product</th>
+
+                            <th>Supplier / Dealer</th>
+
+                            <th>Quantity</th>
+
+                            <th>Purchase Price</th>
+
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% if stock_records %}
+
+                            {% for record in stock_records %}
+
+                            <tr>
+
+                                <td>
+                                    #{{ record[0] }}
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        {{ record[1] }}
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    {{ record[2] or "N/A" }}
+                                </td>
+
+                                <td>
+
+                                    <span class="stock-badge">
+                                        +{{ record[3] }}
+                                    </span>
+
+                                </td>
+
+                                <td class="price">
+
+                                    ₹{{ "%.2f"|format(record[4]) }}
+
+                                </td>
+
+                                <td>
+                                    {{ record[5] }}
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <tr>
+
+                                <td colspan="6"
+                                    class="empty">
+
+                                    📦 No stock-in records yet.
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

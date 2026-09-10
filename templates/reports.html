@@ -1,0 +1,1148 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Reports - Stationery Shop</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #222;
+        }
+
+        .header {
+            background: #172554;
+            color: white;
+            padding: 22px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            background: #2563eb;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+        .container {
+            width: 94%;
+            max-width: 1400px;
+            margin: 30px auto;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(210px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .amount {
+            font-size: 28px;
+            font-weight: bold;
+            color: #172554;
+        }
+
+        .profit {
+            color: #15803d;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        .section h2 {
+            margin-bottom: 20px;
+            color: #172554;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th,
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            background: #eff6ff;
+            color: #172554;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .low {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .status-paid {
+            color: #15803d;
+            font-weight: bold;
+        }
+
+        .status-partial {
+            color: #d97706;
+            font-weight: bold;
+        }
+
+        .status-unpaid {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .empty {
+            padding: 20px;
+            color: #64748b;
+            text-align: center;
+        }
+
+        /* MONTHLY REPORT */
+
+        .monthly-section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+
+        .monthly-section h2 {
+            color: #172554;
+            margin-bottom: 20px;
+        }
+
+        .filter-box {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .control-group label {
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .control-group select {
+            width: 180px;
+            padding: 11px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .view-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 11px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .view-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .print-btn {
+            border: none;
+            background: #15803d;
+            color: white;
+            padding: 11px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .print-btn:hover {
+            background: #166534;
+        }
+
+        .monthly-cards {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .monthly-card {
+            background: #eff6ff;
+            padding: 22px;
+            border-radius: 12px;
+        }
+
+        .monthly-card h3 {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .monthly-card .big {
+            font-size: 27px;
+            font-weight: bold;
+            color: #172554;
+        }
+
+        .monthly-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .monthly-title h3 {
+            font-size: 22px;
+            color: #172554;
+        }
+
+        .monthly-title p {
+            margin-top: 5px;
+            color: #64748b;
+        }
+
+        .message {
+            padding: 13px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+
+            .header {
+                padding: 18px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .container {
+                width: 96%;
+                margin: 20px auto;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .amount {
+                font-size: 24px;
+            }
+
+            .filter-box {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .control-group select {
+                width: 100%;
+            }
+
+            .view-btn,
+            .print-btn {
+                width: 100%;
+            }
+
+        }
+
+        /* PRINT MONTHLY REPORT */
+
+        @media print {
+
+            body {
+                background: white;
+            }
+
+            body * {
+                visibility: hidden;
+            }
+
+            #monthlyReport,
+            #monthlyReport * {
+                visibility: visible;
+            }
+
+            #monthlyReport {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+                margin: 0;
+            }
+
+            .filter-box {
+                display: none;
+            }
+
+            .print-btn {
+                display: none;
+            }
+
+            .monthly-section {
+                box-shadow: none;
+                border: none;
+            }
+
+            .monthly-title h3::before {
+                content: "MAULI ENTERPRISES";
+                display: block;
+                font-size: 28px;
+                margin-bottom: 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>📊 Business Reports</h1>
+
+        <a href="{{ url_for('dashboard') }}">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <div class="container">
+
+
+        <!-- SUMMARY -->
+
+        <div class="summary-grid">
+
+
+            <div class="card">
+
+                <h3>💰 Today's Sales</h3>
+
+                <div class="amount">
+                    ₹{{ "%.2f"|format(today_sales|float) }}
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>🧾 Total Sales</h3>
+
+                <div class="amount">
+                    ₹{{ "%.2f"|format(total_sales|float) }}
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>📦 Total Purchases</h3>
+
+                <div class="amount">
+                    ₹{{ "%.2f"|format(total_purchases|float) }}
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>💵 Dealer Paid</h3>
+
+                <div class="amount">
+                    ₹{{ "%.2f"|format(total_paid|float) }}
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>⏳ Outstanding</h3>
+
+                <div class="amount">
+                    ₹{{ "%.2f"|format(outstanding_amount|float) }}
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>📈 Estimated Profit</h3>
+
+                <div class="amount profit">
+                    ₹{{ "%.2f"|format(total_profit|float) }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- MONTHLY SALES REPORT -->
+
+        <div class="monthly-section" id="monthlyReport">
+
+
+            <h2>📅 Monthly Sales Report</h2>
+
+
+            <!-- FILTER -->
+
+            <form method="GET"
+                  action="{{ url_for('reports') }}"
+                  class="filter-box">
+
+
+                <div class="control-group">
+
+                    <label for="month">
+                        Month
+                    </label>
+
+                    <select id="month"
+                            name="month">
+
+                        <option value="1"
+                            {% if selected_month == 1 %}selected{% endif %}>
+                            January
+                        </option>
+
+                        <option value="2"
+                            {% if selected_month == 2 %}selected{% endif %}>
+                            February
+                        </option>
+
+                        <option value="3"
+                            {% if selected_month == 3 %}selected{% endif %}>
+                            March
+                        </option>
+
+                        <option value="4"
+                            {% if selected_month == 4 %}selected{% endif %}>
+                            April
+                        </option>
+
+                        <option value="5"
+                            {% if selected_month == 5 %}selected{% endif %}>
+                            May
+                        </option>
+
+                        <option value="6"
+                            {% if selected_month == 6 %}selected{% endif %}>
+                            June
+                        </option>
+
+                        <option value="7"
+                            {% if selected_month == 7 %}selected{% endif %}>
+                            July
+                        </option>
+
+                        <option value="8"
+                            {% if selected_month == 8 %}selected{% endif %}>
+                            August
+                        </option>
+
+                        <option value="9"
+                            {% if selected_month == 9 %}selected{% endif %}>
+                            September
+                        </option>
+
+                        <option value="10"
+                            {% if selected_month == 10 %}selected{% endif %}>
+                            October
+                        </option>
+
+                        <option value="11"
+                            {% if selected_month == 11 %}selected{% endif %}>
+                            November
+                        </option>
+
+                        <option value="12"
+                            {% if selected_month == 12 %}selected{% endif %}>
+                            December
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="control-group">
+
+                    <label for="year">
+                        Year
+                    </label>
+
+                    <select id="year"
+                            name="year">
+
+                        {% for year in range(2020, 2036) %}
+
+                        <option value="{{ year }}"
+                            {% if selected_year == year %}selected{% endif %}>
+                            {{ year }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <button type="submit"
+                        class="view-btn">
+
+                    🔎 View Report
+
+                </button>
+
+
+                <button type="button"
+                        class="print-btn"
+                        onclick="window.print()">
+
+                    🖨️ Print Monthly Report
+
+                </button>
+
+
+            </form>
+
+
+            <!-- MONTHLY TITLE -->
+
+            <div class="monthly-title">
+
+                <h3>
+                    Monthly Sales -
+                    {% if selected_month == 1 %}January
+                    {% elif selected_month == 2 %}February
+                    {% elif selected_month == 3 %}March
+                    {% elif selected_month == 4 %}April
+                    {% elif selected_month == 5 %}May
+                    {% elif selected_month == 6 %}June
+                    {% elif selected_month == 7 %}July
+                    {% elif selected_month == 8 %}August
+                    {% elif selected_month == 9 %}September
+                    {% elif selected_month == 10 %}October
+                    {% elif selected_month == 11 %}November
+                    {% elif selected_month == 12 %}December
+                    {% endif %}
+                    {{ selected_year }}
+                </h3>
+
+                <p>
+                    Date-wise sales summary
+                </p>
+
+            </div>
+
+
+            <!-- MONTHLY SUMMARY CARDS -->
+
+            <div class="monthly-cards">
+
+
+                <div class="monthly-card">
+
+                    <h3>
+                        💰 Monthly Sales
+                    </h3>
+
+                    <div class="big">
+                        ₹{{ "%.2f"|format(monthly_sales|float) }}
+                    </div>
+
+                </div>
+
+
+                <div class="monthly-card">
+
+                    <h3>
+                        🧾 Total Bills
+                    </h3>
+
+                    <div class="big">
+                        {{ monthly_bill_count }}
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- DATE-WISE SALES -->
+
+            {% if monthly_sales_details %}
+
+            <table>
+
+                <tr>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Number of Bills
+                    </th>
+
+                    <th>
+                        Total Sales
+                    </th>
+
+                </tr>
+
+
+                {% for row in monthly_sales_details %}
+
+                <tr>
+
+                    <td>
+                        {{ row[0] }}
+                    </td>
+
+                    <td>
+                        {{ row[1] }}
+                    </td>
+
+                    <td>
+                        ₹{{ "%.2f"|format(row[2]|float) }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+
+            </table>
+
+            {% else %}
+
+            <div class="empty">
+
+                📭 No sales recorded for this month.
+
+            </div>
+
+            {% endif %}
+
+
+        </div>
+
+
+        <!-- LOW STOCK -->
+
+        <div class="section">
+
+            <h2>
+                ⚠️ Low Stock Products
+            </h2>
+
+
+            {% if low_stock_products %}
+
+            <table>
+
+                <tr>
+
+                    <th>
+                        Product ID
+                    </th>
+
+                    <th>
+                        Product Name
+                    </th>
+
+                    <th>
+                        Current Stock
+                    </th>
+
+                    <th>
+                        Minimum Stock
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+
+                {% for product in low_stock_products %}
+
+                <tr>
+
+                    <td>
+                        {{ product[0] }}
+                    </td>
+
+                    <td>
+                        {{ product[1] }}
+                    </td>
+
+                    <td class="low">
+                        {{ product[2] }}
+                    </td>
+
+                    <td>
+                        {{ product[3] }}
+                    </td>
+
+                    <td class="low">
+                        ⚠️ Low Stock
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+            {% else %}
+
+            <div class="empty">
+                ✅ No low stock products.
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- TOP SELLING PRODUCTS -->
+
+        <div class="section">
+
+            <h2>
+                🏆 Top Selling Products
+            </h2>
+
+
+            {% if top_products %}
+
+            <table>
+
+                <tr>
+
+                    <th>
+                        Rank
+                    </th>
+
+                    <th>
+                        Product
+                    </th>
+
+                    <th>
+                        Quantity Sold
+                    </th>
+
+                    <th>
+                        Sales Amount
+                    </th>
+
+                </tr>
+
+
+                {% for product in top_products %}
+
+                <tr>
+
+                    <td>
+                        #{{ loop.index }}
+                    </td>
+
+                    <td>
+                        {{ product[0] }}
+                    </td>
+
+                    <td>
+                        {{ product[1] }}
+                    </td>
+
+                    <td>
+
+                        {% if product|length > 2 %}
+
+                            ₹{{ "%.2f"|format(product[2]|float) }}
+
+                        {% else %}
+
+                            ₹0.00
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+            {% else %}
+
+            <div class="empty">
+                No sales available yet.
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- CURRENT STOCK -->
+
+        <div class="section">
+
+            <h2>
+                📦 Current Stock Report
+            </h2>
+
+
+            {% if stock_report %}
+
+            <table>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Stock</th>
+                    <th>Purchase Price</th>
+                    <th>Selling Price</th>
+                    <th>Min Stock</th>
+
+                </tr>
+
+
+                {% for product in stock_report %}
+
+                <tr>
+
+                    <td>
+                        {{ product[0] }}
+                    </td>
+
+                    <td>
+                        {{ product[1] }}
+                    </td>
+
+                    <td>
+                        {{ product[2] }}
+                    </td>
+
+                    <td
+                        {% if product[3] <= product[6] %}
+                            class="low"
+                        {% endif %}
+                    >
+                        {{ product[3] }}
+                    </td>
+
+                    <td>
+                        ₹{{ "%.2f"|format(product[4]|float) }}
+                    </td>
+
+                    <td>
+                        ₹{{ "%.2f"|format(product[5]|float) }}
+                    </td>
+
+                    <td>
+                        {{ product[6] }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+            {% else %}
+
+            <div class="empty">
+                No products available.
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- RECENT SALES -->
+
+        <div class="section">
+
+            <h2>
+                🛒 Recent Sales
+            </h2>
+
+
+            {% if recent_sales %}
+
+            <table>
+
+                <tr>
+
+                    <th>
+                        Sale ID
+                    </th>
+
+                    <th>
+                        Date & Time
+                    </th>
+
+                    <th>
+                        Total Amount
+                    </th>
+
+                    <th>
+                        Payment Method
+                    </th>
+
+                </tr>
+
+
+                {% for sale in recent_sales %}
+
+                <tr>
+
+                    <td>
+                        #{{ sale[0] }}
+                    </td>
+
+                    <td>
+                        {{ sale[1] }}
+                    </td>
+
+                    <td>
+                        ₹{{ "%.2f"|format(sale[2]|float) }}
+                    </td>
+
+                    <td>
+                        {{ sale[3] }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+            {% else %}
+
+            <div class="empty">
+                No sales recorded yet.
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- RECENT PURCHASES -->
+
+        <div class="section">
+
+            <h2>
+                🧾 Recent Dealer Purchases
+            </h2>
+
+
+            {% if recent_purchases %}
+
+            <table>
+
+                <tr>
+
+                    <th>
+                        Purchase ID
+                    </th>
+
+                    <th>
+                        Supplier
+                    </th>
+
+                    <th>
+                        Bill Number
+                    </th>
+
+                    <th>
+                        Bill Date
+                    </th>
+
+                    <th>
+                        Total
+                    </th>
+
+                    <th>
+                        Paid
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+
+                {% for purchase in recent_purchases %}
+
+                <tr>
+
+                    <td>
+                        #{{ purchase[0] }}
+                    </td>
+
+                    <td>
+                        {{ purchase[1] }}
+                    </td>
+
+                    <td>
+                        {{ purchase[2] }}
+                    </td>
+
+                    <td>
+                        {{ purchase[3] }}
+                    </td>
+
+                    <td>
+                        ₹{{ "%.2f"|format(purchase[4]|float) }}
+                    </td>
+
+                    <td>
+                        ₹{{ "%.2f"|format(purchase[5]|float) }}
+                    </td>
+
+                    <td>
+
+                        {% if purchase[6] == "Paid" %}
+
+                        <span class="status-paid">
+                            Paid
+                        </span>
+
+                        {% elif purchase[6] == "Partial" %}
+
+                        <span class="status-partial">
+                            Partial
+                        </span>
+
+                        {% else %}
+
+                        <span class="status-unpaid">
+                            Unpaid
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+            {% else %}
+
+            <div class="empty">
+                No dealer purchases recorded yet.
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>
+```

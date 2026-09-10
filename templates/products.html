@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Products - Mauli Enterprises</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+
+        .header {
+            background: #1e293b;
+            color: white;
+            padding: 20px 35px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 25px;
+        }
+
+        .header p {
+            color: #cbd5e1;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background: #2563eb;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        .back-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* MAIN */
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px;
+        }
+
+
+        /* CARD */
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+
+        /* MESSAGES */
+
+        .success-message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 12px 15px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 15px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+
+        /* FORM */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            color: #334155;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            outline: none;
+
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #2563eb;
+        }
+
+        .full {
+            grid-column: span 2;
+        }
+
+        .add-btn {
+            background: #2563eb;
+            color: white;
+
+            border: none;
+
+            padding: 13px 25px;
+
+            border-radius: 7px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            font-size: 14px;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* TABLE HEADER */
+
+        .table-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .count {
+
+            background: #e0e7ff;
+
+            color: #3730a3;
+
+            padding: 7px 14px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+        }
+
+
+        /* TABLE */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 1000px;
+        }
+
+        th {
+
+            background: #f1f5f9;
+
+            color: #334155;
+
+            padding: 14px;
+
+            text-align: left;
+
+            font-size: 13px;
+        }
+
+        td {
+
+            padding: 14px;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            color: #475569;
+
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .id {
+
+            color: #2563eb;
+
+            font-weight: bold;
+        }
+
+        .product-name {
+
+            font-weight: bold;
+
+            color: #1e293b;
+        }
+
+        .price {
+
+            font-weight: bold;
+
+            color: #059669;
+        }
+
+        .stock {
+
+            font-weight: bold;
+        }
+
+        .low-stock {
+
+            color: #dc2626;
+
+            font-weight: bold;
+        }
+
+        .normal-stock {
+
+            color: #059669;
+
+            font-weight: bold;
+        }
+
+        .category {
+
+            background: #f1f5f9;
+
+            padding: 5px 9px;
+
+            border-radius: 15px;
+
+            font-size: 12px;
+        }
+
+
+        /* ACTION BUTTONS */
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .edit-btn {
+            text-decoration: none;
+            background: #f59e0b;
+            color: white;
+            padding: 7px 11px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .edit-btn:hover {
+            background: #d97706;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 7px 11px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+
+
+        /* EMPTY */
+
+        .empty {
+
+            text-align: center;
+
+            padding: 45px;
+
+            color: #94a3b8;
+        }
+
+        .empty h3 {
+
+            color: #64748b;
+
+            margin-bottom: 8px;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .header {
+
+                padding: 18px;
+
+            }
+
+            .container {
+
+                padding: 15px;
+
+            }
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .full {
+
+                grid-column: span 1;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div>
+
+            <h1>📦 Products</h1>
+
+            <p>
+                Manage stationery products and stock
+            </p>
+
+        </div>
+
+        <a href="/dashboard" class="back-btn">
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- MAIN -->
+
+    <div class="container">
+
+
+        <!-- ADD PRODUCT -->
+
+        <div class="card">
+
+            <h2>
+                ➕ Add New Product
+            </h2>
+
+
+            <!-- SUCCESS MESSAGE -->
+
+            {% if message %}
+
+            <div class="success-message">
+                ✅ {{ message }}
+            </div>
+
+            {% endif %}
+
+
+            <!-- ERROR MESSAGE -->
+
+            {% if error %}
+
+            <div class="error-message">
+                ❌ {{ error }}
+            </div>
+
+            {% endif %}
+
+
+            <form method="POST"
+                  action="/products">
+
+
+                <div class="form-grid">
+
+
+                    <!-- PRODUCT NAME -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Product Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="product_name"
+                            placeholder="Enter product name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Category
+                        </label>
+
+                        <select
+                            name="category_id"
+                            required
+                        >
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+                            {% for category in categories %}
+
+                            <option value="{{ category[0] }}">
+
+                                {{ category[1] }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- QUANTITY -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Opening Stock
+                        </label>
+
+                        <input
+                            type="number"
+                            name="quantity"
+                            min="0"
+                            placeholder="Enter quantity"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PURCHASE PRICE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Purchase Price (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="purchase_price"
+                            min="0"
+                            step="0.01"
+                            placeholder="Enter purchase price"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- SELLING PRICE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Selling Price (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            name="selling_price"
+                            min="0"
+                            step="0.01"
+                            placeholder="Enter selling price"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- MINIMUM STOCK -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Minimum Stock Alert
+                        </label>
+
+                        <input
+                            type="number"
+                            name="min_stock"
+                            min="0"
+                            value="5"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- BUTTON -->
+
+                    <div class="form-group full">
+
+                        <button
+                            type="submit"
+                            class="add-btn"
+                        >
+
+                            + Add Product
+
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+        <!-- PRODUCT LIST -->
+
+        <div class="card">
+
+
+            <div class="table-header">
+
+                <h2>
+                    📋 Product List
+                </h2>
+
+                <div class="count">
+
+                    {{ products|length }} Products
+
+                </div>
+
+            </div>
+
+
+            {% if products %}
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Product
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Stock
+                            </th>
+
+                            <th>
+                                Purchase Price
+                            </th>
+
+                            <th>
+                                Selling Price
+                            </th>
+
+                            <th>
+                                Min Stock
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        {% for product in products %}
+
+
+                        <tr>
+
+
+                            <td class="id">
+
+                                #{{ product[0] }}
+
+                            </td>
+
+
+                            <td class="product-name">
+
+                                {{ product[1] }}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if product[2] %}
+
+                                <span class="category">
+
+                                    {{ product[2] }}
+
+                                </span>
+
+                                {% else %}
+
+                                -
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                {% if product[3] <= product[6] %}
+
+                                <span class="low-stock">
+
+                                    ⚠️ {{ product[3] }}
+
+                                </span>
+
+                                {% else %}
+
+                                <span class="normal-stock">
+
+                                    {{ product[3] }}
+
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td class="price">
+
+                                ₹{{ "%.2f"|format(product[4]) }}
+
+                            </td>
+
+
+                            <td class="price">
+
+                                ₹{{ "%.2f"|format(product[5]) }}
+
+                            </td>
+
+
+                            <td>
+
+                                {{ product[6] }}
+
+                            </td>
+
+
+                            <!-- ACTIONS -->
+
+                            <td>
+
+                                <div class="actions">
+
+                                    <!-- EDIT -->
+
+                                    <a
+                                        href="/edit-product/{{ product[0] }}"
+                                        class="edit-btn"
+                                    >
+                                        ✏️ Edit
+                                    </a>
+
+
+                                    <!-- DELETE -->
+
+                                    <form
+                                        method="POST"
+                                        action="/delete-product/{{ product[0] }}"
+                                        onsubmit="return confirm('Are you sure you want to delete this product?');"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="delete-btn"
+                                        >
+                                            🗑️ Delete
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+
+                        </tr>
+
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+
+            <div class="empty">
+
+                <h3>
+                    📦 No Products Added Yet
+                </h3>
+
+                <p>
+                    Add your first stationery product using the form above.
+                </p>
+
+            </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

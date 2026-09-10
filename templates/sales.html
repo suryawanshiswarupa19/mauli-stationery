@@ -1,0 +1,1411 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sales / Billing - Stationery Shop</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #1e293b;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background: #334155;
+            padding: 10px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            margin-bottom: 30px;
+        }
+
+        .card h2 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+            padding: 12px 15px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            border-left: 4px solid #16a34a;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 15px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            border-left: 4px solid #dc2626;
+        }
+
+        .customer-section {
+            margin-bottom: 25px;
+            padding: 18px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .customer-section h3 {
+            color: #334155;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .customer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .item-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        select,
+        input {
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            outline: none;
+            font-size: 14px;
+            background: white;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: #2563eb;
+        }
+
+        .price-display,
+        .total-display {
+            padding: 11px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+        .remove-btn {
+            border: none;
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 10px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .remove-btn:hover {
+            background: #fecaca;
+        }
+
+        .add-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .payment-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .payment-section select {
+            width: 250px;
+        }
+
+        .grand-total {
+            margin-top: 25px;
+            padding: 18px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .grand-total span:first-child {
+            font-size: 18px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        #grandTotal {
+            font-size: 25px;
+            font-weight: bold;
+            color: #16a34a;
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #16a34a;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #15803d;
+        }
+
+        .submit-btn:disabled {
+            background: #86efac;
+            cursor: not-allowed;
+        }
+
+        .print-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: #7c3aed;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 7px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .print-btn:hover {
+            background: #6d28d9;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #1e293b;
+            color: white;
+            padding: 13px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .payment-badge {
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .stock-info {
+            font-size: 12px;
+            color: #475569;
+            margin-top: 5px;
+        }
+
+        .stock-value {
+            font-weight: bold;
+            color: #16a34a;
+        }
+
+        .stock-zero {
+            color: #dc2626;
+        }
+
+        @media (max-width: 850px) {
+
+            .item-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .remove-btn {
+                width: 100%;
+            }
+
+            .customer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 18px;
+            }
+
+            .container {
+                padding: 0 10px;
+                margin-top: 15px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .item-row {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-section select {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>🧾 Sales / Billing</h1>
+
+    <a href="/dashboard" class="back-btn">
+        ← Dashboard
+    </a>
+
+</div>
+
+<div class="container">
+
+{% if message %}
+
+<div class="success">
+
+    ✅ {{ message }}
+
+    {% if sale_id %}
+
+    <br>
+
+    <a href="/print_bill/{{ sale_id }}"
+       target="_blank"
+       class="print-btn">
+
+        🖨️ Print Bill
+
+    </a>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+
+{% if error %}
+
+<div class="error">
+    ❌ {{ error }}
+</div>
+
+{% endif %}
+
+
+<!-- NEW SALE -->
+
+<div class="card">
+
+    <h2>🛒 Create New Sale</h2>
+
+    <form method="POST"
+          action="/sales"
+          id="saleForm">
+
+
+        <!-- CUSTOMER DETAILS -->
+
+        <div class="customer-section">
+
+            <h3>👤 Customer Details</h3>
+
+            <div class="customer-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Customer Name
+                    </label>
+
+                    <input type="text"
+                           name="customer_name"
+                           placeholder="Enter customer name">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Customer Mobile
+                    </label>
+
+                    <input type="tel"
+                           name="customer_mobile"
+                           placeholder="Enter 10 digit mobile number"
+                           maxlength="10"
+                           inputmode="numeric"
+                           onkeydown="blockMobileKeys(event)">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCTS -->
+
+        <div id="itemsContainer">
+
+            <div class="item-row sale-item">
+
+                <!-- PRODUCT -->
+
+                <div class="form-group">
+
+                    <label>
+                        Product
+                    </label>
+
+                    <select name="product_id"
+                            onchange="updateItem(this)"
+                            required>
+
+                        <option value="">
+                            Select Product
+                        </option>
+
+                        {% for product in products %}
+
+                        <option
+                            value="{{ product[0] }}"
+                            data-stock="{{ product[2] }}"
+                            data-price="{{ product[4] }}">
+
+                            {{ product[1] }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+                    <div class="stock-info">
+
+                        Available Stock:
+                        <span class="stock-value">
+                            -
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUANTITY -->
+
+                <div class="form-group">
+
+                    <label>
+                        Quantity
+                    </label>
+
+                    <input type="number"
+                           name="quantity"
+                           min="1"
+                           value="1"
+                           required
+                           onkeydown="blockInvalidKeys(event)">
+
+                </div>
+
+
+                <!-- SELLING PRICE -->
+
+                <div class="form-group">
+
+                    <label>
+                        Selling Price
+                    </label>
+
+                    <div class="price-display">
+                        ₹0.00
+                    </div>
+
+                </div>
+
+
+                <!-- ITEM TOTAL -->
+
+                <div class="form-group">
+
+                    <label>
+                        Item Total
+                    </label>
+
+                    <div class="total-display">
+                        ₹0.00
+                    </div>
+
+                </div>
+
+
+                <!-- REMOVE -->
+
+                <button type="button"
+                        class="remove-btn"
+                        onclick="removeItem(this)">
+
+                    ✕
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ADD PRODUCT -->
+
+        <button type="button"
+                class="add-btn"
+                onclick="addItem()">
+
+            ➕ Add Another Product
+
+        </button>
+
+
+        <!-- PAYMENT -->
+
+        <div class="payment-section">
+
+            <div class="form-group">
+
+                <label>
+                    Payment Method
+                </label>
+
+                <select name="payment_method"
+                        required>
+
+                    <option value="Cash">
+                        💵 Cash
+                    </option>
+
+                    <option value="UPI">
+                        📱 UPI
+                    </option>
+
+                    <option value="Card">
+                        💳 Card
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- GRAND TOTAL -->
+
+        <div class="grand-total">
+
+            <span>
+                Grand Total
+            </span>
+
+            <span id="grandTotal">
+                ₹0.00
+            </span>
+
+        </div>
+
+
+        <!-- COMPLETE SALE -->
+
+        <button type="submit"
+                class="submit-btn"
+                id="completeSaleBtn">
+
+            💰 Complete Sale
+
+        </button>
+
+
+    </form>
+
+</div>
+
+
+<!-- SALES HISTORY -->
+
+<div class="card">
+
+    <h2>
+        📋 Sales History
+    </h2>
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Sale ID
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Customer
+                    </th>
+
+                    <th>
+                        Total Amount
+                    </th>
+
+                    <th>
+                        Payment Method
+                    </th>
+
+                    <th>
+                        Bill
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% if sales_history %}
+
+                    {% for sale in sales_history %}
+
+                    <tr>
+
+                        <td>
+                            #{{ sale[0] }}
+                        </td>
+
+                        <td>
+                            {{ sale[1] }}
+                        </td>
+
+                        <td>
+                            {% if sale[4] %}
+                                {{ sale[4] }}
+                                {% if sale[5] %}
+                                    <br>
+                                    <small>{{ sale[5] }}</small>
+                                {% endif %}
+                            {% else %}
+                                Walk-in Customer
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            ₹{{ "%.2f"|format(sale[2]) }}
+                        </td>
+
+                        <td>
+
+                            <span class="payment-badge">
+                                {{ sale[3] }}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a href="/print_bill/{{ sale[0] }}"
+                               target="_blank"
+                               class="print-btn">
+
+                                🖨️ Print
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="6"
+                            style="text-align:center; color:#64748b;">
+
+                            No sales yet.
+
+                        </td>
+
+                    </tr>
+
+                {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+
+    // ==========================================
+    // BLOCK INVALID QUANTITY KEYS
+    // ==========================================
+
+    function blockInvalidKeys(event) {
+
+        if (
+            event.key === "-" ||
+            event.key === "+" ||
+            event.key === "e" ||
+            event.key === "E"
+        ) {
+
+            event.preventDefault();
+
+        }
+
+    }
+
+
+    // ==========================================
+    // BLOCK INVALID MOBILE KEYS
+    // ==========================================
+
+    function blockMobileKeys(event) {
+
+        if (
+            event.key === "-" ||
+            event.key === "+" ||
+            event.key === "e" ||
+            event.key === "E" ||
+            event.key === "." ||
+            event.key === ","
+        ) {
+
+            event.preventDefault();
+
+        }
+
+    }
+
+
+    // ==========================================
+    // UPDATE PRODUCT DETAILS
+    // ==========================================
+
+    function updateItem(selectElement) {
+
+        const row =
+            selectElement.closest(".sale-item");
+
+        const option =
+            selectElement.options[
+                selectElement.selectedIndex
+            ];
+
+        if (!option || !option.value) {
+
+            row.querySelector(".price-display").textContent =
+                "₹0.00";
+
+            row.querySelector(".total-display").textContent =
+                "₹0.00";
+
+            row.querySelector(".stock-value").textContent =
+                "-";
+
+            row.querySelector(".stock-value").classList.remove(
+                "stock-zero"
+            );
+
+            const quantityInput =
+                row.querySelector(
+                    'input[name="quantity"]'
+                );
+
+            quantityInput.removeAttribute("max");
+
+            calculateGrandTotal();
+
+            return;
+
+        }
+
+
+        const price =
+            parseFloat(
+                option.dataset.price || 0
+            );
+
+        const stock =
+            parseInt(
+                option.dataset.stock || 0
+            );
+
+
+        const quantityInput =
+            row.querySelector(
+                'input[name="quantity"]'
+            );
+
+        const priceDisplay =
+            row.querySelector(
+                ".price-display"
+            );
+
+        const totalDisplay =
+            row.querySelector(
+                ".total-display"
+            );
+
+        const stockValue =
+            row.querySelector(
+                ".stock-value"
+            );
+
+
+        priceDisplay.textContent =
+            "₹" +
+            price.toFixed(2);
+
+
+        stockValue.textContent =
+            stock;
+
+
+        if (stock <= 0) {
+
+            stockValue.classList.add(
+                "stock-zero"
+            );
+
+            quantityInput.value = "";
+            quantityInput.removeAttribute("max");
+
+        }
+        else {
+
+            stockValue.classList.remove(
+                "stock-zero"
+            );
+
+            quantityInput.max = stock;
+
+            const currentQuantity =
+                Number(quantityInput.value) || 1;
+
+            if (currentQuantity > stock) {
+
+                quantityInput.value = stock;
+
+            }
+
+        }
+
+
+        const quantity =
+            Number(
+                quantityInput.value
+            ) || 0;
+
+
+        totalDisplay.textContent =
+            "₹" +
+            (
+                price * quantity
+            ).toFixed(2);
+
+
+        calculateGrandTotal();
+
+    }
+
+
+    // ==========================================
+    // QUANTITY INPUT
+    // ==========================================
+
+    document.addEventListener(
+        "input",
+        function(event) {
+
+            if (
+                event.target.matches(
+                    'input[name="quantity"]'
+                )
+            ) {
+
+                updateQuantity(
+                    event.target
+                );
+
+            }
+
+        }
+    );
+
+
+    function updateQuantity(inputElement) {
+
+        const row =
+            inputElement.closest(
+                ".sale-item"
+            );
+
+        const select =
+            row.querySelector(
+                'select[name="product_id"]'
+            );
+
+        const option =
+            select.options[
+                select.selectedIndex
+            ];
+
+
+        if (!option || !option.value) {
+
+            inputElement.value = "";
+
+            row.querySelector(
+                ".total-display"
+            ).textContent = "₹0.00";
+
+            calculateGrandTotal();
+
+            return;
+
+        }
+
+
+        const price =
+            parseFloat(
+                option.dataset.price || 0
+            );
+
+        const stock =
+            parseInt(
+                option.dataset.stock || 0
+            );
+
+
+        if (
+            inputElement.value.startsWith("-")
+        ) {
+
+            inputElement.value = "";
+
+            row.querySelector(
+                ".total-display"
+            ).textContent = "₹0.00";
+
+            calculateGrandTotal();
+
+            return;
+
+        }
+
+
+        if (
+            inputElement.value === ""
+        ) {
+
+            row.querySelector(
+                ".total-display"
+            ).textContent = "₹0.00";
+
+            calculateGrandTotal();
+
+            return;
+
+        }
+
+
+        const quantity =
+            Number(
+                inputElement.value
+            );
+
+
+        if (
+            !Number.isFinite(quantity) ||
+            !Number.isInteger(quantity) ||
+            quantity <= 0
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            stock <= 0
+        ) {
+
+            inputElement.value = "";
+
+            alert(
+                "This product is out of stock."
+            );
+
+            row.querySelector(
+                ".total-display"
+            ).textContent = "₹0.00";
+
+            calculateGrandTotal();
+
+            return;
+
+        }
+
+
+        if (
+            quantity > stock
+        ) {
+
+            inputElement.value =
+                stock;
+
+            alert(
+                "Only " +
+                stock +
+                " items available in stock."
+            );
+
+            updateQuantity(
+                inputElement
+            );
+
+            return;
+
+        }
+
+
+        const totalDisplay =
+            row.querySelector(
+                ".total-display"
+            );
+
+
+        totalDisplay.textContent =
+            "₹" +
+            (
+                price * quantity
+            ).toFixed(2);
+
+
+        calculateGrandTotal();
+
+    }
+
+
+    // ==========================================
+    // GRAND TOTAL
+    // ==========================================
+
+    function calculateGrandTotal() {
+
+        let grandTotal = 0;
+
+
+        document
+            .querySelectorAll(
+                ".sale-item"
+            )
+            .forEach(
+                function(row) {
+
+                    const totalText =
+                        row.querySelector(
+                            ".total-display"
+                        )
+                        .textContent
+                        .replace(
+                            "₹",
+                            ""
+                        );
+
+
+                    const total =
+                        parseFloat(
+                            totalText
+                        ) || 0;
+
+
+                    grandTotal += total;
+
+                }
+            );
+
+
+        document.getElementById(
+            "grandTotal"
+        ).textContent =
+            "₹" +
+            grandTotal.toFixed(2);
+
+    }
+
+
+    // ==========================================
+    // ADD PRODUCT
+    // ==========================================
+
+    function addItem() {
+
+        const container =
+            document.getElementById(
+                "itemsContainer"
+            );
+
+        const firstRow =
+            document.querySelector(
+                ".sale-item"
+            );
+
+        const newRow =
+            firstRow.cloneNode(
+                true
+            );
+
+
+        const select =
+            newRow.querySelector(
+                'select[name="product_id"]'
+            );
+
+        const quantity =
+            newRow.querySelector(
+                'input[name="quantity"]'
+            );
+
+
+        select.selectedIndex = 0;
+
+        quantity.value = 1;
+
+        quantity.removeAttribute(
+            "max"
+        );
+
+
+        newRow.querySelector(
+            ".price-display"
+        ).textContent =
+            "₹0.00";
+
+
+        newRow.querySelector(
+            ".total-display"
+        ).textContent =
+            "₹0.00";
+
+
+        newRow.querySelector(
+            ".stock-value"
+        ).textContent =
+            "-";
+
+
+        newRow.querySelector(
+            ".stock-value"
+        ).classList.remove(
+            "stock-zero"
+        );
+
+
+        container.appendChild(
+            newRow
+        );
+
+
+        calculateGrandTotal();
+
+    }
+
+
+    // ==========================================
+    // REMOVE PRODUCT
+    // ==========================================
+
+    function removeItem(button) {
+
+        const rows =
+            document.querySelectorAll(
+                ".sale-item"
+            );
+
+
+        if (
+            rows.length === 1
+        ) {
+
+            alert(
+                "At least one product is required."
+            );
+
+            return;
+
+        }
+
+
+        const row =
+            button.closest(
+                ".sale-item"
+            );
+
+
+        row.remove();
+
+        calculateGrandTotal();
+
+    }
+
+
+    // ==========================================
+    // FORM VALIDATION
+    // ==========================================
+
+    document
+        .getElementById(
+            "saleForm"
+        )
+        .addEventListener(
+            "submit",
+            function(event) {
+
+                const rows =
+                    document.querySelectorAll(
+                        ".sale-item"
+                    );
+
+                let valid = true;
+
+
+                rows.forEach(
+                    function(row) {
+
+                        const product =
+                            row.querySelector(
+                                'select[name="product_id"]'
+                            ).value;
+
+
+                        const quantityInput =
+                            row.querySelector(
+                                'input[name="quantity"]'
+                            );
+
+
+                        const quantity =
+                            Number(
+                                quantityInput.value
+                            );
+
+
+                        if (
+                            !product ||
+                            !Number.isInteger(
+                                quantity
+                            ) ||
+                            quantity <= 0
+                        ) {
+
+                            valid = false;
+
+                        }
+
+                    }
+                );
+
+
+                // CUSTOMER MOBILE VALIDATION
+
+                const mobileInput =
+                    document.querySelector(
+                        'input[name="customer_mobile"]'
+                    );
+
+                const mobile =
+                    mobileInput.value.trim();
+
+
+                if (
+                    mobile &&
+                    !/^\d{10}$/.test(mobile)
+                ) {
+
+                    valid = false;
+
+                    alert(
+                        "Customer mobile number must contain exactly 10 digits."
+                    );
+
+                    mobileInput.focus();
+
+                    event.preventDefault();
+
+                    return;
+
+                }
+
+
+                if (!valid) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please select a product and enter a valid quantity."
+                    );
+
+                    return;
+
+                }
+
+
+                const button =
+                    document.getElementById(
+                        "completeSaleBtn"
+                    );
+
+
+                button.disabled = true;
+
+
+                button.textContent =
+                    "⏳ Processing Sale...";
+
+            }
+        );
+
+
+    // ==========================================
+    // INITIAL TOTAL
+    // ==========================================
+
+    calculateGrandTotal();
+
+</script>
+
+</body>
+
+</html>
+```

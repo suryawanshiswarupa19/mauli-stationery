@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Suppliers / Dealers</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            min-height: 100vh;
+        }
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        .header {
+            background: #1e293b;
+            color: white;
+            padding: 20px 35px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 25px;
+        }
+
+        .header p {
+            color: #cbd5e1;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background: #2563eb;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        .back-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* ==============================
+           MAIN
+        ============================== */
+
+        .container {
+            padding: 30px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+
+        /* ==============================
+           ADD DEALER CARD
+        ============================== */
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+
+            margin-bottom: 30px;
+        }
+
+        .card h2 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #334155;
+            margin-bottom: 7px;
+        }
+
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+
+            font-size: 14px;
+            outline: none;
+        }
+
+
+        input:focus,
+        textarea:focus {
+            border-color: #2563eb;
+        }
+
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+
+        .add-btn {
+            background: #2563eb;
+            color: white;
+
+            border: none;
+            padding: 12px 25px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .add-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* ==============================
+           DEALER LIST
+        ============================== */
+
+        .table-card {
+            background: white;
+            border-radius: 12px;
+
+            padding: 25px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+
+        .table-header h2 {
+            color: #1e293b;
+            font-size: 20px;
+        }
+
+
+        .count {
+            background: #e0e7ff;
+            color: #3730a3;
+
+            padding: 7px 12px;
+            border-radius: 20px;
+
+            font-size: 13px;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+
+        th {
+            background: #f1f5f9;
+
+            color: #334155;
+
+            text-align: left;
+
+            padding: 14px;
+
+            font-size: 13px;
+        }
+
+
+        td {
+            padding: 14px;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            color: #475569;
+
+            font-size: 14px;
+        }
+
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+
+        .id {
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+
+        .dealer-name {
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+
+        .phone {
+            color: #475569;
+        }
+
+
+        .address {
+            max-width: 300px;
+        }
+
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+
+            color: #94a3b8;
+        }
+
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 700px) {
+
+            .header {
+                padding: 18px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: span 1;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th,
+            td {
+                padding: 9px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==============================
+         HEADER
+    ============================== -->
+
+    <div class="header">
+
+        <div>
+
+            <h1>🚚 Suppliers / Dealers</h1>
+
+            <p>
+                Manage your stationery suppliers and dealers
+            </p>
+
+        </div>
+
+
+        <a href="/dashboard" class="back-btn">
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+
+    <!-- ==============================
+         MAIN CONTAINER
+    ============================== -->
+
+    <div class="container">
+
+
+        <!-- ==============================
+             ADD DEALER
+        ============================== -->
+
+        <div class="card">
+
+            <h2>
+                ➕ Add New Dealer
+            </h2>
+
+
+            <form method="POST" action="/suppliers">
+
+
+                <div class="form-row">
+
+
+                    <!-- DEALER NAME -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Dealer / Supplier Name *
+                        </label>
+
+                        <input
+                            type="text"
+                            name="supplier_name"
+                            placeholder="Enter dealer name"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="text"
+                            name="phone"
+                            placeholder="Enter phone number"
+                            maxlength="15"
+                        >
+
+                    </div>
+
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            Address
+                        </label>
+
+                        <textarea
+                            name="address"
+                            placeholder="Enter dealer address"
+                        ></textarea>
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="add-btn"
+                >
+                    + Add Dealer
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+
+        <!-- ==============================
+             DEALER LIST
+        ============================== -->
+
+        <div class="table-card">
+
+
+            <div class="table-header">
+
+                <h2>
+                    📋 Dealer List
+                </h2>
+
+                <div class="count">
+
+                    {{ suppliers|length }} Dealers
+
+                </div>
+
+            </div>
+
+
+
+            {% if suppliers %}
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Dealer Name
+                        </th>
+
+                        <th>
+                            Phone
+                        </th>
+
+                        <th>
+                            Address
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for supplier in suppliers %}
+
+                    <tr>
+
+                        <td class="id">
+                            #{{ supplier[0] }}
+                        </td>
+
+
+                        <td class="dealer-name">
+                            {{ supplier[1] }}
+                        </td>
+
+
+                        <td class="phone">
+                            {{ supplier[2] or "Not Available" }}
+                        </td>
+
+
+                        <td class="address">
+                            {{ supplier[3] or "Not Available" }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+
+            {% else %}
+
+            <div class="empty">
+
+                <h3>
+                    No Dealers Added Yet
+                </h3>
+
+                <p>
+                    Add your first dealer using the form above.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>

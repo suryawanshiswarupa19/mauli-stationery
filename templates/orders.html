@@ -1,0 +1,406 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Order List</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6fb;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: #333;
+        }
+
+        .add-btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            background: #5568d9;
+        }
+
+        .table-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 950px;
+        }
+
+        th {
+            background: #24243e;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f8f9ff;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .complete-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .complete-btn:hover {
+            background: #218838;
+        }
+
+        .cancel-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cancel-btn:hover {
+            background: #c82333;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+
+        .empty h3 {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+
+        .amount {
+            font-weight: bold;
+            color: #222;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div>
+
+            <h1>
+                🛒 Order List
+            </h1>
+
+            <p style="color:#777; margin-top:6px;">
+
+                Manage orders placed with dealers
+
+            </p>
+
+        </div>
+
+
+        <!-- NEW ORDER BUTTON -->
+
+        <a href="/new-order" class="add-btn">
+
+            + New Order
+
+        </a>
+
+    </div>
+
+
+
+    <!-- ORDER TABLE -->
+
+    <div class="table-box">
+
+
+        {% if orders %}
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Order ID
+                    </th>
+
+                    <th>
+                        Dealer
+                    </th>
+
+                    <th>
+                        Order Date
+                    </th>
+
+                    <th>
+                        Expected Date
+                    </th>
+
+                    <th>
+                        Total
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Actions
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+                {% for order in orders %}
+
+
+                <tr>
+
+                    <td>
+                        #{{ order[0] }}
+                    </td>
+
+                    <td>
+                        {{ order[1] }}
+                    </td>
+
+                    <td>
+                        {{ order[2] }}
+                    </td>
+
+                    <td>
+                        {{ order[3] or 'Not Set' }}
+                    </td>
+
+                    <td class="amount">
+
+                        ₹{{ order[6] }}
+
+                    </td>
+
+                    <td>
+
+                        {% if order[4] == 'Pending' %}
+
+                            <span class="status pending">
+                                Pending
+                            </span>
+
+                        {% elif order[4] == 'Completed' %}
+
+                            <span class="status completed">
+                                Completed
+                            </span>
+
+                        {% elif order[4] == 'Cancelled' %}
+
+                            <span class="status cancelled">
+                                Cancelled
+                            </span>
+
+                        {% else %}
+
+                            <span class="status">
+                                {{ order[4] }}
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- ACTIONS -->
+
+                    <td>
+
+                        {% if order[4] == 'Pending' %}
+
+                        <div class="actions">
+
+                            <form action="/complete-order/{{ order[0] }}"
+                                  method="POST">
+
+                                <button type="submit"
+                                        class="complete-btn">
+
+                                    ✓ Complete
+
+                                </button>
+
+                            </form>
+
+
+                            <form action="/cancel-order/{{ order[0] }}"
+                                  method="POST"
+                                  onsubmit="return confirm('Are you sure you want to cancel this order?');">
+
+                                <button type="submit"
+                                        class="cancel-btn">
+
+                                    ✕ Cancel
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                        {% else %}
+
+                            —
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+
+                {% endfor %}
+
+
+            </tbody>
+
+        </table>
+
+
+        {% else %}
+
+
+        <!-- NO ORDERS -->
+
+        <div class="empty">
+
+            <h3>
+                No Orders Found
+            </h3>
+
+            <p>
+                No dealer orders have been created yet.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+
+    <!-- BACK BUTTON -->
+
+    <a href="/dashboard" class="back">
+
+        ← Back to Dashboard
+
+    </a>
+
+
+</body>
+
+</html>
+```

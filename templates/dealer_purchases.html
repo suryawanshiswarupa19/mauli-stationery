@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dealer Purchases</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #333;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 25px auto;
+        }
+
+        .header {
+            background: #1f2937;
+            color: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: white;
+            color: #1f2937;
+            padding: 10px 18px;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            color: #1f2937;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: #374151;
+        }
+
+        input,
+        select,
+        textarea {
+            padding: 11px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2563eb;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .full-width {
+            grid-column: span 3;
+        }
+
+        .products-section {
+            margin-top: 25px;
+        }
+
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .products-header h3 {
+            color: #1f2937;
+        }
+
+        .add-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 17px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .product-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.2fr 1.2fr 0.7fr;
+            gap: 12px;
+            align-items: end;
+            margin-bottom: 12px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .remove-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 11px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background: #b91c1c;
+        }
+
+        .item-total {
+            background: #eef2ff;
+            font-weight: bold;
+        }
+
+        .payment-section {
+            margin-top: 25px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .total-box {
+            margin-top: 25px;
+            background: #111827;
+            color: white;
+            padding: 18px;
+            border-radius: 9px;
+            text-align: right;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+            width: 100%;
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #15803d;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 13px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th {
+            background: #1f2937;
+            color: white;
+            padding: 13px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .status {
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .paid {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .partial {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .unpaid {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 900px) {
+
+            .form-grid,
+            .payment-section {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: span 1;
+            }
+
+            .product-row {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>🧾 Dealer Purchases</h1>
+
+        <a href="{{ url_for('dashboard') }}" class="back-btn">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+
+    <!-- ERROR -->
+    {% if error %}
+    <div class="error">
+        {{ error }}
+    </div>
+    {% endif %}
+
+
+    <!-- NEW PURCHASE -->
+    <div class="card">
+
+        <h2>➕ Add New Dealer Purchase</h2>
+
+        <form method="POST">
+
+            <!-- BASIC DETAILS -->
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Dealer / Supplier</label>
+
+                    <select name="supplier_id" required>
+
+                        <option value="">
+                            Select Dealer
+                        </option>
+
+                        {% for supplier in suppliers %}
+
+                        <option value="{{ supplier[0] }}">
+                            {{ supplier[1] }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Bill Number</label>
+
+                    <input
+                        type="text"
+                        name="bill_number"
+                        placeholder="Enter bill number"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Bill Date</label>
+
+                    <input
+                        type="date"
+                        name="bill_date"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Stock Received Date</label>
+
+                    <input
+                        type="date"
+                        name="stock_received_date"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- PRODUCTS -->
+            <div class="products-section">
+
+                <div class="products-header">
+
+                    <h3>📦 Purchased Products</h3>
+
+                    <button
+                        type="button"
+                        class="add-btn"
+                        onclick="addProductRow()"
+                    >
+                        + Add Product
+                    </button>
+
+                </div>
+
+
+                <div id="products-container">
+
+                    <!-- FIRST PRODUCT -->
+                    <div class="product-row">
+
+                        <div class="form-group">
+
+                            <label>Product</label>
+
+                            <select
+                                name="product_id"
+                                class="product-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select Product
+                                </option>
+
+                                {% for product in products %}
+
+                                <option
+                                    value="{{ product[0] }}"
+                                    data-price="{{ product[3] }}"
+                                >
+                                    {{ product[1] }}
+                                    (Stock: {{ product[2] }})
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Quantity</label>
+
+                            <input
+                                type="number"
+                                name="quantity"
+                                class="quantity"
+                                min="1"
+                                value="1"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Purchase Price</label>
+
+                            <input
+                                type="number"
+                                name="purchase_price"
+                                class="purchase-price"
+                                min="0"
+                                step="0.01"
+                                value="0"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Item Total</label>
+
+                            <input
+                                type="text"
+                                class="item-total"
+                                value="₹0.00"
+                                readonly
+                            >
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="remove-btn"
+                            onclick="removeProductRow(this)"
+                        >
+                            Remove
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PAYMENT -->
+            <div class="payment-section">
+
+                <div class="form-group">
+
+                    <label>Total Amount</label>
+
+                    <input
+                        type="text"
+                        id="total-display"
+                        value="₹0.00"
+                        readonly
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Amount Paid</label>
+
+                    <input
+                        type="number"
+                        name="amount_paid"
+                        id="amount-paid"
+                        min="0"
+                        step="0.01"
+                        value="0"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Payment Status</label>
+
+                    <select
+                        name="payment_status"
+                        id="payment-status"
+                        required
+                    >
+
+                        <option value="Unpaid">
+                            Unpaid
+                        </option>
+
+                        <option value="Partial">
+                            Partial
+                        </option>
+
+                        <option value="Paid">
+                            Paid
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Payment Date</label>
+
+                    <input
+                        type="date"
+                        name="payment_date"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Payment Method</label>
+
+                    <select name="payment_method">
+
+                        <option value="">
+                            Select Method
+                        </option>
+
+                        <option value="Cash">
+                            Cash
+                        </option>
+
+                        <option value="UPI">
+                            UPI
+                        </option>
+
+                        <option value="Card">
+                            Card
+                        </option>
+
+                        <option value="Bank Transfer">
+                            Bank Transfer
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Payment Reference</label>
+
+                    <input
+                        type="text"
+                        name="payment_reference"
+                        placeholder="UPI / Transaction ID"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Bill File Name</label>
+
+                    <input
+                        type="text"
+                        name="bill_file"
+                        placeholder="Example: bill123.pdf"
+                    >
+
+                </div>
+
+
+                <div class="form-group full-width">
+
+                    <label>Notes</label>
+
+                    <textarea
+                        name="notes"
+                        placeholder="Enter any additional notes..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOTAL -->
+            <div class="total-box">
+
+                Grand Total:
+                <span id="grand-total">
+                    ₹0.00
+                </span>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+            <button
+                type="submit"
+                class="submit-btn"
+            >
+                💾 Save Purchase & Increase Stock
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- PURCHASE HISTORY -->
+    <div class="card">
+
+        <h2>📋 Dealer Purchase History</h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Dealer</th>
+                        <th>Bill No.</th>
+                        <th>Bill Date</th>
+                        <th>Received Date</th>
+                        <th>Total</th>
+                        <th>Paid</th>
+                        <th>Status</th>
+                        <th>Payment Method</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% if purchases %}
+
+                        {% for purchase in purchases %}
+
+                        <tr>
+
+                            <td>
+                                {{ purchase[0] }}
+                            </td>
+
+                            <td>
+                                {{ purchase[1] }}
+                            </td>
+
+                            <td>
+                                {{ purchase[2] }}
+                            </td>
+
+                            <td>
+                                {{ purchase[3] }}
+                            </td>
+
+                            <td>
+                                {{ purchase[4] }}
+                            </td>
+
+                            <td>
+                                ₹{{ "%.2f"|format(purchase[5]) }}
+                            </td>
+
+                            <td>
+                                ₹{{ "%.2f"|format(purchase[6]) }}
+                            </td>
+
+                            <td>
+
+                                {% if purchase[7] == "Paid" %}
+
+                                    <span class="status paid">
+                                        Paid
+                                    </span>
+
+                                {% elif purchase[7] == "Partial" %}
+
+                                    <span class="status partial">
+                                        Partial
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status unpaid">
+                                        Unpaid
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                {{ purchase[8] or "-" }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <tr>
+
+                            <td
+                                colspan="9"
+                                style="text-align:center; padding:30px;"
+                            >
+                                No dealer purchases found.
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // =====================================================
+    // ADD PRODUCT ROW
+    // =====================================================
+
+    function addProductRow() {
+
+        const container =
+            document.getElementById("products-container");
+
+        const firstRow =
+            document.querySelector(".product-row");
+
+        const newRow =
+            firstRow.cloneNode(true);
+
+        // Reset values
+        newRow.querySelector(".product-select").value = "";
+
+        newRow.querySelector(".quantity").value = 1;
+
+        newRow.querySelector(".purchase-price").value = 0;
+
+        newRow.querySelector(".item-total").value = "₹0.00";
+
+        container.appendChild(newRow);
+
+        attachEvents(newRow);
+
+        calculateGrandTotal();
+    }
+
+
+    // =====================================================
+    // REMOVE PRODUCT ROW
+    // =====================================================
+
+    function removeProductRow(button) {
+
+        const rows =
+            document.querySelectorAll(".product-row");
+
+        if (rows.length <= 1) {
+
+            alert("At least one product is required.");
+
+            return;
+        }
+
+        button.parentElement.remove();
+
+        calculateGrandTotal();
+    }
+
+
+    // =====================================================
+    // CALCULATE ITEM TOTAL
+    // =====================================================
+
+    function calculateItemTotal(row) {
+
+        const quantity =
+            parseFloat(
+                row.querySelector(".quantity").value
+            ) || 0;
+
+        const price =
+            parseFloat(
+                row.querySelector(".purchase-price").value
+            ) || 0;
+
+        const total =
+            quantity * price;
+
+        row.querySelector(".item-total").value =
+            "₹" + total.toFixed(2);
+
+        calculateGrandTotal();
+    }
+
+
+    // =====================================================
+    // CALCULATE GRAND TOTAL
+    // =====================================================
+
+    function calculateGrandTotal() {
+
+        let grandTotal = 0;
+
+        document
+            .querySelectorAll(".product-row")
+            .forEach(function(row) {
+
+                const quantity =
+                    parseFloat(
+                        row.querySelector(".quantity").value
+                    ) || 0;
+
+                const price =
+                    parseFloat(
+                        row.querySelector(".purchase-price").value
+                    ) || 0;
+
+                grandTotal += quantity * price;
+
+            });
+
+
+        document.getElementById("grand-total").innerText =
+            "₹" + grandTotal.toFixed(2);
+
+        document.getElementById("total-display").value =
+            "₹" + grandTotal.toFixed(2);
+
+    }
+
+
+    // =====================================================
+    // ATTACH EVENTS
+    // =====================================================
+
+    function attachEvents(row) {
+
+        const quantity =
+            row.querySelector(".quantity");
+
+        const price =
+            row.querySelector(".purchase-price");
+
+        const product =
+            row.querySelector(".product-select");
+
+
+        quantity.addEventListener(
+            "input",
+            function() {
+
+                calculateItemTotal(row);
+
+            }
+        );
+
+
+        price.addEventListener(
+            "input",
+            function() {
+
+                calculateItemTotal(row);
+
+            }
+        );
+
+
+        product.addEventListener(
+            "change",
+            function() {
+
+                const selected =
+                    product.options[
+                        product.selectedIndex
+                    ];
+
+                const defaultPrice =
+                    selected.getAttribute(
+                        "data-price"
+                    );
+
+                if (defaultPrice) {
+
+                    price.value =
+                        parseFloat(defaultPrice).toFixed(2);
+
+                }
+
+                calculateItemTotal(row);
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // PAYMENT STATUS AUTOMATIC
+    // =====================================================
+
+    function updatePaymentStatus() {
+
+        let total = 0;
+
+        document
+            .querySelectorAll(".product-row")
+            .forEach(function(row) {
+
+                const quantity =
+                    parseFloat(
+                        row.querySelector(".quantity").value
+                    ) || 0;
+
+                const price =
+                    parseFloat(
+                        row.querySelector(".purchase-price").value
+                    ) || 0;
+
+                total += quantity * price;
+
+            });
+
+
+        const paid =
+            parseFloat(
+                document.getElementById("amount-paid").value
+            ) || 0;
+
+
+        const status =
+            document.getElementById("payment-status");
+
+
+        if (paid <= 0) {
+
+            status.value = "Unpaid";
+
+        }
+        else if (paid < total) {
+
+            status.value = "Partial";
+
+        }
+        else {
+
+            status.value = "Paid";
+
+        }
+
+    }
+
+
+    // =====================================================
+    // PAGE LOAD
+    // =====================================================
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            document
+                .querySelectorAll(".product-row")
+                .forEach(function(row) {
+
+                    attachEvents(row);
+
+                });
+
+
+            document
+                .getElementById("amount-paid")
+                .addEventListener(
+                    "input",
+                    updatePaymentStatus
+                );
+
+
+            calculateGrandTotal();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
+

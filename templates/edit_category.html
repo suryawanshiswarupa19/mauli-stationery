@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Category - MAULI ENTERPRISES</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #1e293b;
+            color: white;
+            padding: 20px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 25px;
+        }
+
+        .header p {
+            color: #cbd5e1;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background: #2563eb;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        .back-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 60px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            color: #1e293b;
+            margin-bottom: 25px;
+            font-size: 21px;
+        }
+
+        .category-info {
+            background: #f1f5f9;
+            padding: 12px 15px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37,99,235,0.10);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .update-btn {
+            flex: 1;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 13px;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .update-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .cancel-btn {
+            flex: 1;
+            background: #64748b;
+            color: white;
+            text-decoration: none;
+            padding: 13px;
+            border-radius: 7px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .cancel-btn:hover {
+            background: #475569;
+        }
+
+        @media (max-width: 600px) {
+
+            .header {
+                padding: 18px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .container {
+                margin: 30px auto;
+                padding: 15px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div>
+
+            <h1>
+                ✏️ Edit Category
+            </h1>
+
+            <p>
+                Update stationery category
+            </p>
+
+        </div>
+
+
+        <a
+            href="/categories"
+            class="back-btn"
+        >
+            ← Categories
+        </a>
+
+    </div>
+
+
+    <!-- MAIN -->
+
+    <div class="container">
+
+        <div class="card">
+
+            <h2>
+                ✏️ Update Category
+            </h2>
+
+
+            <div class="category-info">
+
+                Category ID:
+                <strong>#{{ category[0] }}</strong>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="/edit-category/{{ category[0] }}"
+            >
+
+                <label>
+                    Category Name
+                </label>
+
+
+                <input
+                    type="text"
+                    name="category_name"
+                    value="{{ category[1] }}"
+                    placeholder="Enter category name"
+                    required
+                >
+
+
+                <div class="buttons">
+
+                    <button
+                        type="submit"
+                        class="update-btn"
+                    >
+                        ✅ Update Category
+                    </button>
+
+
+                    <a
+                        href="/categories"
+                        class="cancel-btn"
+                    >
+                        ❌ Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
