@@ -1,15 +1,23 @@
-
 from flask import Flask, render_template, request, redirect, session, send_from_directory
+
 import psycopg2
+
 import os
+
 import random
+
 from werkzeug.utils import secure_filename
+
 from datetime import date
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 app = Flask(__name__)
 
-app.secret_key = "stationery_secret_key"
+app.secret_key = os.getenv("SECRET_KEY")
 
 
 # =========================================================
@@ -17,11 +25,17 @@ app.secret_key = "stationery_secret_key"
 # =========================================================
 
 def get_db_connection():
+
     return psycopg2.connect(
+
         host="localhost",
+
         database="stationery_shop",
+
         user="postgres",
-        password="Swarupa2005"
+
+        password=os.getenv("DB_PASSWORD")
+
     )
 
 

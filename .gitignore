@@ -1,0 +1,10 @@
+.env
+uploads/
+static/uploads/
+__pycache__/
+*.pyc
+*.sql
+app.ps1
+dsa2.code-workspace
+synopsis*.pdf
+templatess/
