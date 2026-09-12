@@ -26,6 +26,15 @@ app.secret_key = os.getenv("SECRET_KEY")
 
 def get_db_connection():
 
+    database_url = os.getenv("DATABASE_URL")
+
+    if database_url:
+
+        return psycopg2.connect(
+            database_url,
+            sslmode="require"
+        )
+
     return psycopg2.connect(
 
         host="localhost",
